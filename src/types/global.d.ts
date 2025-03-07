@@ -1,15 +1,16 @@
-
-interface UserType {
+export type UserType = {
     id: number;
     name: string;
     image: string;
     isFavorite: boolean;
-}
-
-
-
-interface UserCardProps {
+  };
+  
+  export type UserCardProps = {
     user: UserType;
     onToggleFavorite: (id: number) => void;
-}
-
+  };
+  
+  export type UserDirectoryProps = {
+    searchQuery: string;
+  };
+  

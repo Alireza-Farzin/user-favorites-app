@@ -1,7 +1,7 @@
-
-import { Avatar, Typography, Card, CardContent,  IconButton } from '@mui/material';
+import { Avatar, Typography, Card, CardContent, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { UserCardProps } from '../types/global';
 
 const UserCard: React.FC<UserCardProps> = ({ user, onToggleFavorite }) => {
   return (

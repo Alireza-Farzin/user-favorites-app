@@ -1,14 +1,25 @@
 import Navbar from "./components/Navbar"
 import UserDirectory from "./components/UserDirectory"
-
+import SearchBar from "./components/SearchBar"
+import { Container } from "@mui/material"
+import { useState } from "react"
 
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    console.log("Search query:", query);
+  };
+
   return (
-    <div className="flex flex-col gap-5">
+    <>
       <Navbar />
-      <h1 className="text-6xl font-black py-5 text-center ">List of users</h1>
-      <UserDirectory />
-    </div>
+      <Container maxWidth="xl">
+        <SearchBar onSearch={handleSearch} />
+        <UserDirectory searchQuery={searchQuery} />
+      </Container>
+    </>
   )
 }
 
