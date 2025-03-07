@@ -23,8 +23,9 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
 
       <Paper
         component="form"
-        sx={{ p: '5px 4px', display: 'flex', alignItems: 'center', maxWidth: 600, width: '100%', borderRadius: '40px', margin: '60px  0' }}
+        sx={{ p: '5px 4px', display: 'flex', alignItems: 'center', maxWidth: 600, width: '100%', borderRadius: '40px' }}
       >
+
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search users"

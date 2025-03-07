@@ -6,10 +6,10 @@ import { UserCardProps } from '../types/global';
 const UserCard: React.FC<UserCardProps> = ({ user, onToggleFavorite }) => {
   return (
     <Card elevation={2} sx={{ borderRadius: 2, height: '100%', position: 'relative' }}>
-      <IconButton 
-        sx={{ 
-          position: 'absolute', 
-          top: 8, 
+      <IconButton
+        sx={{
+          position: 'absolute',
+          top: 8,
           right: 8,
           color: user.isFavorite ? 'red' : 'grey.400'
         }}

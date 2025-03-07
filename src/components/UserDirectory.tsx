@@ -1,35 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import avatar from '../assets/icosn/1_PiHoomzwh9Plr9_GA26JcA.png';
 import UserCard from './UserCard';
 import { UserDirectoryProps, UserType } from '../types/global';
-
-
-const initialUsers: UserType[] = [
-  { id: 1, name: 'Eduardo Strosin', image: avatar, isFavorite: false },
-  { id: 2, name: 'Jane Doe', image: avatar, isFavorite: false },
-];
+import { useGetUsersQuery } from '../redux/api/usersApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleFavorite } from '../redux/slices/favoritesSlice';
+import { RootState } from '../redux/store';
 
 const UserDirectory: React.FC<UserDirectoryProps> = ({ searchQuery }) => {
-  const [users, setUsers] = useState<UserType[]>(initialUsers);
+  const { data: users, error, isLoading } = useGetUsersQuery();
+  const [filteredUsers, setFilteredUsers] = useState<UserType[]>([]);
+  const dispatch = useDispatch();
+  const favorites = useSelector((state: RootState) => state.favorites.items || []);
 
-  const handleToggleFavorite = (id: number): void => {
-    setUsers(users.map(user =>
-      user.id === id ? { ...user, isFavorite: !user.isFavorite } : user
-    ));
+  useEffect(() => {
+    if (users) {
+      const filtered = users.filter(user =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+
+      setFilteredUsers(
+        filtered.map(user => ({
+          ...user,
+          isFavorite: Array.isArray(favorites)
+            ? favorites.some(fav => fav.id === user.id)
+            : false
+        }))
+      );
+    }
+  }, [users, searchQuery, favorites]);
+
+  const handleToggleFavorite = (userId: string) => {
+    const user = users?.find(u => u.id === userId);
+    if (user) {
+      dispatch(toggleFavorite(user));
+    }
   };
 
-
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error occurred while fetching users</div>;
 
   return (
-    <Box className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+    <Box className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5" sx={{margin:'50px'}} >
       {filteredUsers.map((user) => (
-        <UserCard 
-          key={user.id} 
-          user={user} 
+        <UserCard
+          key={user.id}
+          user={user}
           onToggleFavorite={handleToggleFavorite}
         />
       ))}
